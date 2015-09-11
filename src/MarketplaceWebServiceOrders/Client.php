@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Copyright 2009-2014 Amazon Services. All Rights Reserved.
+ * Copyright 2009-2015 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  *
  * You may not use this file except in compliance with the License. 
@@ -13,8 +13,8 @@
  * @category Amazon
  * @package  Marketplace Web Service Orders
  * @version  2013-09-01
- * Library Version: 2014-09-30
- * Generated: Thu Oct 02 16:23:38 GMT 2014
+ * Library Version: 2015-06-18
+ * Generated: Thu Jun 18 19:28:12 GMT 2015
  */
 
 /**
@@ -30,7 +30,7 @@ class MarketplaceWebServiceOrders_Client implements MarketplaceWebServiceOrders_
 {
 
     const SERVICE_VERSION = '2013-09-01';
-    const MWS_CLIENT_VERSION = '2014-09-30';
+    const MWS_CLIENT_VERSION = '2015-06-18';
 
     /** @var string */
     private  $_awsAccessKeyId = null;
@@ -45,6 +45,8 @@ class MarketplaceWebServiceOrders_Client implements MarketplaceWebServiceOrders_
                                'SignatureMethod' => 'HmacSHA256',
                                'ProxyHost' => null,
                                'ProxyPort' => -1,
+                               'ProxyUsername' => null,
+                               'ProxyPassword' => null,
                                'MaxErrorRetry' => 3,
                                'Headers' => array()
                                );
@@ -389,6 +391,8 @@ class MarketplaceWebServiceOrders_Client implements MarketplaceWebServiceOrders_
      * <li>TimesRetryOnError</li>
      * <li>ProxyHost</li>
      * <li>ProxyPort</li>
+     * <li>ProxyUsername<li>
+     * <li>ProxyPassword<li>
      * <li>MaxErrorRetry</li>
      * </ul>
      */
@@ -543,11 +547,11 @@ class MarketplaceWebServiceOrders_Client implements MarketplaceWebServiceOrders_
             for (;;) {
                 $response = $this->_httpPost($parameters);
                 $status = $response['Status'];
-                if ($status === 200) {
+                if ($status == 200) {
                     return array('ResponseBody' => $response['ResponseBody'],
                       'ResponseHeaderMetadata' => $response['ResponseHeaderMetadata']);
                 }
-                if ($status === 500 && $this->_pauseOnRetry(++$retries)) {
+                if ($status == 500 && $this->_pauseOnRetry(++$retries)) {
                     continue;
                 }
                 throw $this->_reportAnyErrors($response['ResponseBody'],
@@ -639,6 +643,10 @@ class MarketplaceWebServiceOrders_Client implements MarketplaceWebServiceOrders_
         {
             curl_setopt($ch, CURLOPT_PROXY, $config['ProxyHost'] . ':' . $config['ProxyPort']);
         }
+        if ($config['ProxyUsername'] != null && $config['ProxyPassword'] != null)
+        {
+            curl_setopt($ch, CURLOPT_PROXYUSERPWD, $config['ProxyUsername'] . ':' . $config['ProxyPassword']);
+        }
 
         $response = "";
         $response = curl_exec($ch);
@@ -676,7 +684,7 @@ class MarketplaceWebServiceOrders_Client implements MarketplaceWebServiceOrders_
      */
     private function _extractHeadersAndBody($response){
         //First split by 2 'CRLF'
-        $responseComponents = preg_split("/(?:\r?\n){2}/", $response);
+        $responseComponents = preg_split("/(?:\r?\n){2}/", $response, 2);
         $body = null;
         for ($count = 0; 
                 $count < count($responseComponents) && $body == null; 
@@ -688,7 +696,7 @@ class MarketplaceWebServiceOrders_Client implements MarketplaceWebServiceOrders_
             if($responseStatus != null && 
                     $this->_httpHeadersHaveContent($headers)){
                 
-                $responseHeaderMetadata = $this->_extractResponseHeaderMetadata(headers);
+                $responseHeaderMetadata = $this->_extractResponseHeaderMetadata($headers);
                 //The body will be the next item in the responseComponents array
                 $body = $responseComponents[++$count];
             }
@@ -858,7 +866,7 @@ class MarketplaceWebServiceOrders_Client implements MarketplaceWebServiceOrders_
         $signatureVersion = $parameters['SignatureVersion'];
         $algorithm = "HmacSHA1";
         $stringToSign = null;
-        if (2 === $signatureVersion) {
+        if (2 == $signatureVersion) {
             $algorithm = $this->_config['SignatureMethod'];
             $parameters['SignatureMethod'] = $algorithm;
             $stringToSign = $this->_calculateStringToSignV2($parameters);
