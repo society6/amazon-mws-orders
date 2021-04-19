@@ -1,5 +1,5 @@
 {
-    "name": "zarv1k/amazon-mws-orders",
+    "name": "society6/amazon-mws-orders",
     "description": "Amazon MWS Orders API with Composer integration",
     "license": "Apache-2.0",
     "keywords": [
@@ -8,12 +8,17 @@
         "api",
         "orders"
     ],
-    "homepage": "https://github.com/plugmystore/amazon-mws-orders",
+    "homepage": "https://github.com/society6/amazon-mws-orders",
     "authors": [
         {
             "name": "Yann Milin",
             "email": "yann@plugmystore.com",
             "homepage": "http://plugmystore.com"
+        }
+        {
+            "name": "Chukky Nze",
+            "email": "chukky.nze@leafgroup.com",
+            "homepage": "http://society6.com"
         }
     ],
     "require": {
