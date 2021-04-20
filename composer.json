@@ -1,6 +1,6 @@
 {
     "name": "zarv1k/amazon-mws-orders",
-    "version": "dev-master",
+    "version": "1.0.0",
     "description": "Amazon MWS Orders API with Composer integration",
     "license": "Apache-2.0",
     "keywords": [
