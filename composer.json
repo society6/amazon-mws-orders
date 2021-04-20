@@ -1,6 +1,6 @@
 {
-    "name": "zarv1k/amazon-mws-orders",
-    "version": "1.0.0",
+    "name": "society6/amazon-mws-orders",
+    "version": "1.0.2",
     "description": "S6 - Amazon MWS Orders API with Composer integration",
     "license": "Apache-2.0",
     "keywords": [
